@@ -64,6 +64,36 @@
     margin:.8rem 0 0;
   }
 
+  /* ── Selector de modo ── */
+  .modos{
+    max-width:760px;
+    width:100%;
+    margin:0 auto;
+    padding:0 1.25rem .7rem;
+    display:flex;
+    gap:.5rem;
+  }
+  .modo{
+    appearance:none;
+    cursor:pointer;
+    border:1.5px solid var(--cana);
+    background:transparent;
+    color:var(--tinta);
+    font-family:'Work Sans', sans-serif;
+    font-size:.88rem;
+    font-weight:600;
+    padding:.55rem 1rem;
+    border-radius:999px;
+    transition:background .15s, color .15s;
+  }
+  .modo small{ font-weight:400; color:inherit; opacity:.75; }
+  .modo.activo{
+    background:var(--tinta);
+    border-color:var(--tinta);
+    color:var(--papel);
+  }
+  .modo:focus-visible{ outline:3px solid var(--cana); outline-offset:2px; }
+
   /* ── Visor ── */
   .escena{
     flex:1;
@@ -180,10 +210,15 @@
   <hr class="nudo" aria-hidden="true">
 </header>
 
+<nav class="modos" aria-label="Modo de visualización">
+  <button class="modo activo" id="modoReal" aria-pressed="true">Tamaño real <small>· en el piso</small></button>
+  <button class="modo" id="modoMaqueta" aria-pressed="false">Maqueta 1:5 <small>· en tu escritorio</small></button>
+</nav>
+
 <main class="escena">
   <model-viewer
       src="silla.glb"
-      alt="Silla artesanal de bambú en realidad aumentada"
+      alt="Silla artesanal de bambú sobre tarima de exhibición con cartela museográfica, en realidad aumentada"
       ar
       ar-modes="webxr scene-viewer quick-look"
       ar-placement="floor"
@@ -194,7 +229,7 @@
       rotation-per-second="22deg"
       shadow-intensity="1"
       shadow-softness="0.85"
-      camera-orbit="-35deg 78deg 1.7m"
+      camera-orbit="-30deg 78deg 2.3m"
       min-camera-orbit="auto 55deg auto"
       loading="eager">
 
@@ -208,9 +243,9 @@
 </main>
 
 <section class="pasos" aria-label="Instrucciones">
-  <div class="paso"><strong>1 · Toca el botón</strong> «Ver en tu espacio» y permite el acceso a la cámara.</div>
-  <div class="paso"><strong>2 · Apunta al piso</strong> y mueve el teléfono despacio hasta que la silla aparezca.</div>
-  <div class="paso"><strong>3 · Camina a su alrededor.</strong> Está a tamaño real: decide dónde viviría en tu espacio.</div>
+  <div class="paso"><strong>1 · Elige la escala</strong> y toca «Ver en tu espacio». Permite el acceso a la cámara.</div>
+  <div class="paso"><strong>2 · Apunta a una superficie:</strong> el piso a tamaño real, o tu escritorio en modo maqueta.</div>
+  <div class="paso"><strong>3 · Recorre la pieza.</strong> Acércate a la cartela y decide dónde viviría esta exhibición.</div>
 </section>
 
 <p class="escritorio">Desde el computador puedes explorar el modelo en 3D con el mouse. El modo de realidad aumentada aparece al abrir esta página en un teléfono.</p>
@@ -227,6 +262,20 @@
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     mv.removeAttribute('auto-rotate');
   }
+
+  // Selector de escala: tamaño real (piso) ↔ maqueta 1:5 (escritorio)
+  const bReal = document.getElementById('modoReal');
+  const bMaq = document.getElementById('modoMaqueta');
+  function setModo(maqueta){
+    mv.scale = maqueta ? '0.2 0.2 0.2' : '1 1 1';
+    mv.cameraOrbit = maqueta ? '-30deg 78deg 0.55m' : '-30deg 78deg 2.3m';
+    bReal.classList.toggle('activo', !maqueta);
+    bMaq.classList.toggle('activo', maqueta);
+    bReal.setAttribute('aria-pressed', String(!maqueta));
+    bMaq.setAttribute('aria-pressed', String(maqueta));
+  }
+  bReal.addEventListener('click', () => setModo(false));
+  bMaq.addEventListener('click', () => setModo(true));
 
   // Si es un dispositivo táctil (teléfono/tableta) pero el navegador no puede
   // lanzar AR, muestra el aviso con la solución (Safari en iPhone, Chrome en Android).
