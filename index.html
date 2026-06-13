@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Silla en tu espacio · Diseño de experiencias interactivas</title>
+<meta name="description" content="Experiencia de realidad aumentada: ancla una silla artesanal de bambú en tu propio espacio.">
+
+<!-- model-viewer (copia local, sin dependencia de CDN) -->
+<script type="module" src="model-viewer.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,640&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --tinta:#22382C;        /* verde guadua profundo */
+    --fondo:#E9EDE2;        /* hoja clara */
+    --cana:#C2995C;         /* caña madura */
+    --cana-oscura:#8F6B3C;  /* nudo */
+    --papel:#F7F6EF;        /* superficie del visor */
+    --suave:#5C6E60;        /* texto secundario */
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    background:var(--fondo);
+    color:var(--tinta);
+    font-family:'Work Sans', system-ui, sans-serif;
+    display:flex;
+    flex-direction:column;
+    min-height:100dvh;
+  }
+
+  /* ── Cabecera ── */
+  header{
+    padding:1.1rem 1.25rem .9rem;
+    max-width:760px;
+    width:100%;
+    margin:0 auto;
+  }
+  .area{
+    font-size:.72rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--cana-oscura);
+    font-weight:600;
+  }
+  h1{
+    font-family:'Fraunces', Georgia, serif;
+    font-weight:640;
+    font-size:clamp(1.45rem, 4.5vw, 2rem);
+    line-height:1.12;
+    margin-top:.3rem;
+    text-wrap:balance;
+  }
+  .nudo{
+    border:none;
+    border-top:2px solid var(--cana);
+    border-bottom:1px solid var(--cana);
+    height:5px;
+    width:64px;
+    margin:.8rem 0 0;
+  }
+
+  /* ── Visor ── */
+  .escena{
+    flex:1;
+    display:flex;
+    max-width:760px;
+    width:100%;
+    margin:0 auto;
+    padding:0 1.25rem;
+    min-height:0;
+  }
+  model-viewer{
+    width:100%;
+    min-height:min(62dvh, 560px);
+    background:
+      radial-gradient(ellipse at 50% 88%, rgba(194,153,92,.28), transparent 62%),
+      var(--papel);
+    border-radius:18px;
+    --poster-color:transparent;
+  }
+  /* Botón AR propio (slot oficial de model-viewer) */
+  .boton-ar{
+    position:absolute;
+    bottom:18px;
+    left:50%;
+    transform:translateX(-50%);
+    appearance:none;
+    border:none;
+    cursor:pointer;
+    background:var(--tinta);
+    color:var(--papel);
+    font-family:'Work Sans', sans-serif;
+    font-size:1rem;
+    font-weight:600;
+    padding:.85rem 1.5rem;
+    border-radius:999px;
+    box-shadow:0 6px 18px rgba(34,56,44,.28), inset 0 0 0 1.5px var(--cana);
+    display:flex;
+    align-items:center;
+    gap:.55rem;
+    white-space:nowrap;
+  }
+  .boton-ar:active{ transform:translateX(-50%) scale(.97); }
+  .boton-ar:focus-visible{ outline:3px solid var(--cana); outline-offset:3px; }
+  .boton-ar svg{ width:1.15em; height:1.15em; flex:none; }
+
+  /* ── Instrucciones ── */
+  .pasos{
+    max-width:760px;
+    width:100%;
+    margin:0 auto;
+    padding:1rem 1.25rem .4rem;
+    display:flex;
+    gap:1rem;
+    flex-wrap:wrap;
+  }
+  .paso{
+    flex:1 1 150px;
+    font-size:.86rem;
+    line-height:1.4;
+    color:var(--suave);
+    border-top:2px solid var(--cana);
+    padding-top:.5rem;
+  }
+  .paso strong{ color:var(--tinta); display:block; font-weight:600; }
+
+  /* Mensaje solo-escritorio */
+  .escritorio{
+    display:none;
+    max-width:760px;
+    margin:0 auto;
+    padding:.4rem 1.25rem 0;
+    font-size:.86rem;
+    color:var(--suave);
+  }
+  @media (hover:hover) and (pointer:fine){
+    .escritorio{ display:block; }
+  }
+
+  /* ── Pie ── */
+  footer{
+    max-width:760px;
+    width:100%;
+    margin:0 auto;
+    padding:1rem 1.25rem 1.4rem;
+    font-size:.78rem;
+    color:var(--suave);
+  }
+  footer span{ color:var(--cana-oscura); font-weight:600; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; animation:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="area">Diseño interactivo · Sesión sincrónica</p>
+  <h1>Del contenido a la experiencia: una silla en tu espacio</h1>
+  <hr class="nudo" aria-hidden="true">
+</header>
+
+<main class="escena">
+  <model-viewer
+      src="silla.glb"
+      alt="Silla artesanal de bambú en realidad aumentada"
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+      ar-placement="floor"
+      ar-scale="fixed"
+      camera-controls
+      auto-rotate
+      auto-rotate-delay="1500"
+      rotation-per-second="22deg"
+      shadow-intensity="1"
+      shadow-softness="0.85"
+      camera-orbit="-35deg 78deg 1.7m"
+      min-camera-orbit="auto 55deg auto"
+      loading="eager">
+
+    <button slot="ar-button" class="boton-ar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 7.5 12 3l9 4.5M3 7.5v9L12 21m-9-13.5L12 12m9-4.5v9L12 21m9-13.5L12 12m0 9V12"/>
+      </svg>
+      Ver en tu espacio
+    </button>
+  </model-viewer>
+</main>
+
+<section class="pasos" aria-label="Instrucciones">
+  <div class="paso"><strong>1 · Toca el botón</strong> «Ver en tu espacio» y permite el acceso a la cámara.</div>
+  <div class="paso"><strong>2 · Apunta al piso</strong> y mueve el teléfono despacio hasta que la silla aparezca.</div>
+  <div class="paso"><strong>3 · Camina a su alrededor.</strong> Está a tamaño real: decide dónde viviría en tu espacio.</div>
+</section>
+
+<p class="escritorio">Desde el computador puedes explorar el modelo en 3D con el mouse. El modo de realidad aumentada aparece al abrir esta página en un teléfono.</p>
+
+<footer>
+  Pieza desarrollada en colaboración con el Taller Ojtat · Cooperativa Tosepan (Cuetzalan, México). <span>Este recurso queda disponible en el aula virtual del curso.</span>
+</footer>
+
+<script>
+  // Respeta la preferencia de movimiento reducido: detiene la rotación automática.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelector('model-viewer').removeAttribute('auto-rotate');
+  }
+</script>
+
+</body>
+</html>
