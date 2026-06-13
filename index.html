@@ -142,6 +142,20 @@
     .escritorio{ display:block; }
   }
 
+  /* Aviso: navegador sin soporte AR */
+  .aviso-ar{
+    max-width:760px;
+    width:calc(100% - 2.5rem);
+    margin:.8rem auto 0;
+    padding:.8rem 1rem;
+    font-size:.88rem;
+    line-height:1.45;
+    color:var(--tinta);
+    background:rgba(194,153,92,.18);
+    border-left:4px solid var(--cana);
+    border-radius:0 10px 10px 0;
+  }
+
   /* ── Pie ── */
   footer{
     max-width:760px;
@@ -201,15 +215,29 @@
 
 <p class="escritorio">Desde el computador puedes explorar el modelo en 3D con el mouse. El modo de realidad aumentada aparece al abrir esta página en un teléfono.</p>
 
+<p class="aviso-ar" id="avisoAR" hidden>Este navegador no puede abrir el modo de realidad aumentada. Copia el enlace y ábrelo en <strong>Safari</strong> (iPhone) o <strong>Chrome</strong> (Android). Mientras tanto, puedes explorar el modelo en 3D con el dedo.</p>
+
 <footer>
   Pieza desarrollada en colaboración con el Taller Ojtat · Cooperativa Tosepan (Cuetzalan, México). <span>Este recurso queda disponible en el aula virtual del curso.</span>
 </footer>
 
 <script>
   // Respeta la preferencia de movimiento reducido: detiene la rotación automática.
+  const mv = document.querySelector('model-viewer');
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.querySelector('model-viewer').removeAttribute('auto-rotate');
+    mv.removeAttribute('auto-rotate');
   }
+
+  // Si es un dispositivo táctil (teléfono/tableta) pero el navegador no puede
+  // lanzar AR, muestra el aviso con la solución (Safari en iPhone, Chrome en Android).
+  const esTactil = window.matchMedia('(pointer:coarse)').matches;
+  mv.addEventListener('load', () => {
+    setTimeout(() => {
+      if (esTactil && !mv.canActivateAR) {
+        document.getElementById('avisoAR').hidden = false;
+      }
+    }, 600);
+  });
 </script>
 
 </body>
