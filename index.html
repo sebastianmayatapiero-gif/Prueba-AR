@@ -176,7 +176,12 @@
   hotspots.forEach(h=>{
     h.addEventListener('click',()=>{
       const n=parseInt(mv.dataset.nivel||'1');
-      if(n===3){ panel.classList.add('show'); }
+      if(n===3){
+  panel.classList.add('show');
+  mv.animationName='Animation';
+  mv.currentTime=0;
+  mv.play({repetitions:1});
+}
       else if(n===2){
         // respuesta visual: pequeño "rebote" de camara hacia la parte
         const map={'hotspot-asiento':'-20deg 70deg 1.2m','hotspot-respaldo':'-15deg 60deg 1.4m','hotspot-pata':'30deg 85deg 1.1m'};
