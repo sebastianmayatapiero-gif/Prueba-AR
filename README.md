@@ -1,22 +1,13 @@
-# Silla en tu espacio — App WebAR de tres niveles
+# Silla en tu espacio — Versión exhibición (tarima + cartela)
 
-App de realidad aumentada para la clase. Tres niveles de experiencia (Norman):
-- **Visceral**: la silla anclada a tamaño real en AR.
-- **Conductual**: girar/escalar + hotspots que inspeccionan cada parte.
-- **Reflexivo**: hotspot que abre el panel con el origen del taller.
+App WebAR: la silla de bambú sobre tarima de galería con cartela del taller.
+Selector "Tamaño real / Maqueta 1:5" para anclar en el piso o sobre el escritorio.
 
 ## Archivos
-- `index.html` — la app completa
-- `model-viewer.min.js` — librería (local, sin CDN)
-- `silla.glb` — modelo (reemplázalo por tu silla real con animación; ver guía)
-- `ANIMACION_ENSAMBLAJE.md` — cómo agregar la animación de ensamblaje desde Blender
+- index.html — la app
+- model-viewer.min.js — librería local
+- silla.glb — silla + tarima + cartela (67 KB)
 
 ## Publicar
-Sube los archivos al repositorio de GitHub Pages (reemplazando los anteriores).
-La URL y el QR siguen siendo los mismos.
-
-## Para la demo en vivo (versión "downgrade")
-Para la demostración previa, puedes usar una versión simplificada que solo muestre el nivel
-visceral (silla anclada, sin hotspots ni panel). Así el comité vive el "grado cero" y la
-actividad posterior revela los tres niveles. Para hacerlo, basta con ocultar el selector de
-niveles y dejar fijo el nivel 1 — avísame y te preparo ese index_demo.html aparte.
+Sube los 3 archivos al repositorio de GitHub Pages (reemplazando los anteriores).
+Misma URL, mismo QR.
